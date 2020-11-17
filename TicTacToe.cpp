@@ -202,6 +202,7 @@ rowCols findBestMove(char gameBoard[3][3])
     }
     return bestMove;
 }
+
 void printBoard(char matrix[3][3])
 {
     for (int i = 0; i<3; i++)
@@ -214,6 +215,36 @@ void printBoard(char matrix[3][3])
     }
 }
 
+char winnerCheck(char gameBoard[3][3])
+{
+    for (int row=0;row<3;row++)  //check rows
+    {
+        if (gameBoard[row][0] == gameBoard[row][1] &&
+            gameBoard[row][1] == gameBoard[row][2] &&
+            gameBoard[row][0] != '_')
+        {
+            return gameBoard[row][0];
+        }
+    }
+
+    for (int col=0;col<3;col++)  //check columns
+    {
+        if (gameBoard[0][col] == gameBoard[1][col] &&
+            gameBoard[1][col] == gameBoard[2][col] &&
+            gameBoard[0][col] != '_')
+        {
+            return gameBoard[0][col];
+        }
+    }
+
+    if (gameBoard[0][0] == gameBoard[1][1] &&
+        gameBoard[1][1] == gameBoard[2][2] &&
+        gameBoard[0][0] != '_')
+    {
+        return gameBoard[0][0];
+    }
+    return 'I';
+}
 
 int main()
 {
@@ -223,14 +254,19 @@ int main()
         { '_', '_', '_' },
         { '_', '_', '_' }
     };
+    cout << "Initial State of Game Board:" << endl;
+    printBoard(gameBoard);
+    cout << "---------------------------------" << endl;
 
     int gameLengthTotal = 0;
     int nodesGeneratedTotal = 0;
     int i = 0;
     rowCols bestMove;
+    bool movesLeft = true;
+    char winner;
 
     //main loop finds X and O positions
-    while (isMovesLeft(gameBoard))
+    while (movesLeft)
     {
         bestMove = findBestMove(gameBoard);
         //alternate x and o's (turns)
@@ -249,11 +285,17 @@ int main()
         printf("Nodes Generated: %d\n", nodesGenerated);
         nodesGeneratedTotal += nodesGenerated;
         printBoard(gameBoard);
-        printf("---------------------\n");
+        printf("\n---------------------------------\n");
+        if (winnerCheck(gameBoard) == 'I')
+        movesLeft = isMovesLeft(gameBoard);
+        else
+        movesLeft = false;
     }
 
     cout << "Game Length Total: " << gameLengthTotal << endl
-             << "Total Nodes Generated: " << nodesGeneratedTotal;
+             << "Total Nodes Generated: " << nodesGeneratedTotal << endl;
 
+    winner = toupper(winnerCheck(gameBoard));
+    cout << "The winner is " << winner << "!";
     return 0;
 }
