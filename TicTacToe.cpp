@@ -207,25 +207,55 @@ rowCols findBestMove(char gameBoard[3][3])
             bestVal);
     return bestMove;
 }
-
+void printBoard(char matrix[3][3])
+{
+    for (int i = 0; i<3; i++)
+    {
+        for (int j = 0; j<3; j++)
+        {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 
 int main()
 {
     char gameBoard[3][3] =
     {
-        { 'x', 'o', 'x' },
-        { 'o', 'o', 'x' },
+        { '_', '_', '_' },
+        { '_', '_', '_' },
         { '_', '_', '_' }
     };
 
-    rowCols bestMove = findBestMove(gameBoard);
+    //main loop finds X and O positions
+    for (int i = 0; i<4; i++)
+    {
+        rowCols bestMove = findBestMove(gameBoard);
+        gameBoard[bestMove.row][bestMove.col] = 'x';    //x position
+        printf("The Optimal Move is : ");
+        printf("ROW: %d COL: %d\n\n", bestMove.row, bestMove.col);
 
-    //Adding 1 to end so matrix is labeled > 1, since C++ arrays start at 0.
-    printf("The Optimal Move is :\n");
-    printf("ROW: %d COL: %d\n\n", bestMove.row+=1,
-                                  bestMove.col+=1 );
+        printf("Game Length: %d\n", gameLength);
+        printf("Nodes Generated: %d\n", nodesGenerated);
+        printBoard(gameBoard);
+        printf("---------------------\n");
 
-    printf("Game Length: %d\n", gameLength);
-    printf("Nodes Generated: %d\n", nodesGenerated);
+
+
+        bestMove = findBestMove(gameBoard);
+        gameBoard[bestMove.row][bestMove.col] = 'o';  //o position
+        printf("The Optimal Move is : ");
+        printf("ROW: %d COL: %d\n\n", bestMove.row, bestMove.col);
+
+        printf("Game Length: %d\n", gameLength);
+        printf("Nodes Generated: %d\n", nodesGenerated);
+        printBoard(gameBoard);
+        printf("---------------------\n");
+    }
+
+
+
+
     return 0;
 }
