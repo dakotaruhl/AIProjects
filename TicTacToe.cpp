@@ -4,8 +4,6 @@
     entire board to determine a winner or a loser.
 */
 
-//GIT TEST
-
 //#include <bits/stdc++.h>  //every std library (Requries GCC).
 //we just need these 2
 #include <iostream>   //std::cout
@@ -41,7 +39,7 @@ int evaluate(char gb[3][3])
     int rowC,
         colC,
         diagC = 0;
-    //Check rows for victory
+    //Check rows
     for (int row = 0; row<3; row++)
     {
         rowC++; //increment row counter
@@ -51,17 +49,17 @@ int evaluate(char gb[3][3])
             nodesGenerated += 3; //3 nodes generated each pass
             if (gb[row][0]==player)
             {
-                gameLength = gameLength + rowC + colC;
+                gameLength += rowC + colC;
                 return +1;
             }
             else if (gb[row][0]==opponent)
             {
-                gameLength = gameLength + rowC + colC;
+                gameLength += rowC + colC;
                 return -1;
             }
         }
     }
-    //Checking columns for victory
+    //Checking columns
     for (int col = 0; col<3; col++)
     {
         colC++; //increment column counter
@@ -71,17 +69,17 @@ int evaluate(char gb[3][3])
             nodesGenerated += 3; //3 nodes generated each pass
             if (gb[0][col]==player)
             {
-                gameLength = gameLength + rowC + colC;
+                gameLength =+ rowC + colC;
                 return +1;
             }
             else if (gb[0][col]==opponent)
             {
-                gameLength = gameLength + rowC + colC;
+                gameLength += rowC + colC;
                 return -1;
             }
         }
     }
-    //Checking diagonals for victory.
+    //Checking diagonals
     if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
     {
         diagC++;  //increment diagonal counter
@@ -113,8 +111,8 @@ int evaluate(char gb[3][3])
         }
     }
     //Return 0 if no winners
-    gameLength = sizeof(gb)^2;  //max traverse 3x3 + 12
-    nodesGenerated = sizeof(gb)^2;
+    gameLength = 81;  //max traverse 3x3 + 12
+    nodesGenerated = 81;
     return 0;
 }
 
@@ -202,9 +200,6 @@ rowCols findBestMove(char gameBoard[3][3])
             }
         }
     }
-
-    printf("The value of the best Move is : %d\n\n",
-            bestVal);
     return bestMove;
 }
 void printBoard(char matrix[3][3])
@@ -219,6 +214,7 @@ void printBoard(char matrix[3][3])
     }
 }
 
+
 int main()
 {
     char gameBoard[3][3] =
@@ -228,34 +224,36 @@ int main()
         { '_', '_', '_' }
     };
 
+    int gameLengthTotal = 0;
+    int nodesGeneratedTotal = 0;
+    int i = 0;
+    rowCols bestMove;
+
     //main loop finds X and O positions
-    for (int i = 0; i<4; i++)
+    while (isMovesLeft(gameBoard))
     {
-        rowCols bestMove = findBestMove(gameBoard);
-        gameBoard[bestMove.row][bestMove.col] = 'x';    //x position
-        printf("The Optimal Move is : ");
-        printf("ROW: %d COL: %d\n\n", bestMove.row, bestMove.col);
-
-        printf("Game Length: %d\n", gameLength);
-        printf("Nodes Generated: %d\n", nodesGenerated);
-        printBoard(gameBoard);
-        printf("---------------------\n");
-
-
-
         bestMove = findBestMove(gameBoard);
-        gameBoard[bestMove.row][bestMove.col] = 'o';  //o position
-        printf("The Optimal Move is : ");
-        printf("ROW: %d COL: %d\n\n", bestMove.row, bestMove.col);
+        //alternate x and o's (turns)
+        if (i == 0)
+            gameBoard[bestMove.row][bestMove.col] = 'x';
+        if (i%2 == 1)
+            gameBoard[bestMove.row][bestMove.col] = 'o';
+        if (i%2 == 0)
+            gameBoard[bestMove.row][bestMove.col] = 'x';
+        i++;
 
+
+        printf("The Optimal Move is: ROW %d COL %d\n\n", bestMove.row, bestMove.col);
         printf("Game Length: %d\n", gameLength);
+        gameLengthTotal += gameLength;
         printf("Nodes Generated: %d\n", nodesGenerated);
+        nodesGeneratedTotal += nodesGenerated;
         printBoard(gameBoard);
         printf("---------------------\n");
     }
 
-
-
+    cout << "Game Length Total: " << gameLengthTotal << endl
+             << "Total Nodes Generated: " << nodesGeneratedTotal;
 
     return 0;
 }
