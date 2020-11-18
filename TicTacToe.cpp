@@ -1,13 +1,11 @@
-/* Tic-tac-toe by Dakota Ruhl, Kaylin Y, and Nicole Beltran.
+/* Tic-tac-toe by Dakota Ruhl, Kalin Ybarra, and Nicole Beltran.
 
     The main function will determine the next best move for the game piece. We need to loop this and finish creating the
     entire board to determine a winner or a loser.
 */
 
-//#include <bits/stdc++.h>  //every std library (Requries GCC).
-//we just need these 2
-#include <iostream>   //std::cout
-#include <algorithm>  //std::max
+#include <iostream>
+#include <algorithm>
 using namespace std;
 
 struct rowCols
@@ -17,108 +15,19 @@ struct rowCols
 
 char player = 'x',
      opponent = 'o';
-
 int gameLength = 0;
 int nodesGenerated = 0;
 
-//determines if there are moves left to play
-bool isMovesLeft(char gameBoard[3][3])
-{
-    for (int i = 0; i<3; i++)
-        for (int j = 0; j<3; j++)
-            if (gameBoard[i][j]=='_')
-                return true;
-    return false;
-}
+/*
+************************************************************
+            EVALUATION FUNCTION 1
+     +100 score for 3 in a row by player
 
-//EVALUATION FUNCTION 1 (only +-100 for 3 in a row)
-//REWRITE YOURS HERE
-//int evaluate(char gb[3][3])
-//{
-//    //counters
-//    int rowC,
-//        colC,
-//        diagC = 0;
-//    //we assume 'o' is the opponent, and assign negative scores
-//
-//    //Check rows
-//    for (int row = 0; row<3; row++)
-//    {
-//        rowC++; //increment row counter
-//        if (gb[row][0]==gb[row][1] &&
-//            gb[row][1]==gb[row][2])
-//        {
-//            nodesGenerated += 3; //3 nodes generated each pass
-//            if (gb[row][0]==player)
-//            {
-//                gameLength += rowC + colC;
-//                return +100;
-//            }
-//            else if (gb[row][0]==opponent)
-//            {
-//                gameLength += rowC + colC;
-//                return -100;
-//            }
-//        }
-//    }
-//    //Checking columns
-//    for (int col = 0; col<3; col++)
-//    {
-//        colC++; //increment column counter
-//        if (gb[0][col]==gb[1][col] &&
-//            gb[1][col]==gb[2][col])
-//        {
-//            nodesGenerated += 3; //3 nodes generated each pass
-//            if (gb[0][col]==player)
-//            {
-//                gameLength =+ rowC + colC;
-//                return +100;
-//            }
-//            else if (gb[0][col]==opponent)
-//            {
-//                gameLength += rowC + colC;
-//                return -100;
-//            }
-//        }
-//    }
-//    //Checking diagonals
-//    if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
-//    {
-//        diagC++;  //increment diagonal counter
-//        nodesGenerated += 3; //3 nodes generated
-//        if (gb[0][0]==player)
-//        {
-//            gameLength = gameLength + rowC + colC + diagC;
-//            return +100;
-//        }
-//        else if (gb[0][0]==opponent)
-//        {
-//            gameLength = gameLength + rowC + colC + diagC;
-//            return -100;
-//        }
-//    }
-//    if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
-//    {
-//        diagC += 2; //increment twice to include first check
-//        nodesGenerated += 6;
-//        if (gb[0][2]==player)
-//        {
-//            gameLength = gameLength + rowC + colC + diagC;
-//            return +100;
-//        }
-//        else if (gb[0][2]==opponent)
-//        {
-//            gameLength = gameLength + rowC + colC + diagC;
-//            return -100;
-//        }
-//    }
-//    //Return 0 if no winners
-//    gameLength = 81;  //max traverse 3x3 + 12
-//    nodesGenerated = 81;
-//    return 0;
-//}
+     -100 score for 3 in a row by opponent
 
-//EVALUATION FUNCTION 2 (in addition to E1, it also +- 1 point for EACH 1-in-a-line (with two empty cells).)
+*/
+
+
 int evaluate(char gb[3][3])
 {
     //counters
@@ -129,11 +38,106 @@ int evaluate(char gb[3][3])
     //Check rows
     for (int row = 0; row<3; row++)
     {
-        rowC++; //increment row counter
+        rowC++;
         if (gb[row][0]==gb[row][1] &&
             gb[row][1]==gb[row][2])
         {
-            nodesGenerated += 3; //3 nodes generated each pass
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +100;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+    }
+    //Checking columns
+    for (int col = 0; col<3; col++)
+    {
+        colC++;
+        if (gb[0][col]==gb[1][col] &&
+            gb[1][col]==gb[2][col])
+        {
+            nodesGenerated += 3;
+            if (gb[0][col]==player)
+            {
+                gameLength =+ rowC + colC;
+                return +100;
+            }
+            else if (gb[0][col]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+    }
+    //Checking diagonals
+    if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
+    {
+        diagC++;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+    if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
+    {
+        diagC += 2; //increment twice to include first check
+        nodesGenerated += 3;
+        if (gb[0][2]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][2]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+    //Return 0 if no winners
+    gameLength = 2^9;
+    nodesGenerated = 2^12;
+    return 0;
+}
+
+
+/*
+************************************************************
+            EVALUATION FUNCTION 2
+     +100 score for 3 in a row by player,
+     +1 point for each 1-in-a-line (with two empty cells)
+     -100 score for 3 in a row by opponent
+     -1 point for each 1-in-a-line (with two empty cells)
+*/
+
+/*
+int evaluate(char gb[3][3])
+{
+    //counters
+    int rowC,
+        colC,
+        diagC = 0;
+
+    //Check rows
+    for (int row = 0; row<3; row++)
+    {
+        rowC++;
+        if (gb[row][0]==gb[row][1] &&
+            gb[row][1]==gb[row][2])
+        {
+            nodesGenerated += 3;
             if (gb[row][0]==player)
             {
                 gameLength += rowC + colC;
@@ -164,11 +168,11 @@ int evaluate(char gb[3][3])
     //Checking columns
     for (int col = 0; col<3; col++)
     {
-        colC++; //increment column counter
+        colC++;
         if (gb[0][col]==gb[1][col] &&
             gb[1][col]==gb[2][col])
         {
-            nodesGenerated += 3; //3 nodes generated each pass
+            nodesGenerated += 3;
             if (gb[0][col]==player)
             {
                 gameLength =+ rowC + colC;
@@ -199,8 +203,8 @@ int evaluate(char gb[3][3])
     //Checking diagonals
     if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
     {
-        diagC++;  //increment diagonal counter
-        nodesGenerated += 3; //3 nodes generated
+        diagC++;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength = gameLength + rowC + colC + diagC;
@@ -215,7 +219,7 @@ int evaluate(char gb[3][3])
     if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
     {
         diagC += 2; //increment twice to include first check
-        nodesGenerated += 6;
+        nodesGenerated += 3;
         if (gb[0][2]==player)
         {
             gameLength = gameLength + rowC + colC + diagC;
@@ -231,8 +235,8 @@ int evaluate(char gb[3][3])
     //+- 1 point for 1-in-a-line with two empty cells beside (diagonals)
     if (gb[0][0] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
-        diagC += 3; //+3 for three checks
-        nodesGenerated += 9;
+        diagC += 3;
+        nodesGenerated += 3;;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -246,8 +250,8 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
-        diagC += 3; //+3 for three checks
-        nodesGenerated += 9;
+        diagC += 3;
+        nodesGenerated += 3;;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -261,8 +265,8 @@ int evaluate(char gb[3][3])
     }
     if (gb[2][2] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
-        diagC += 3; //+3 for three checks
-        nodesGenerated += 9;
+        diagC += 3;
+        nodesGenerated += 3;;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -276,8 +280,8 @@ int evaluate(char gb[3][3])
     }
     if (gb[2][0] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
-        diagC += 3; //+3 for three checks
-        nodesGenerated += 9;
+        diagC += 3;
+        nodesGenerated += 3;;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -290,9 +294,508 @@ int evaluate(char gb[3][3])
         }
     }
     //Return 0 if no winners
-    gameLength = 81;  //max traverse 3x3 + 12
-    nodesGenerated = 81;
+    gameLength = 2^9;
+    gameLength = 2^12;
     return 0;
+}
+*/
+
+
+/*
+************************************************************
+            EVALUATION FUNCTION 3
+     +100 score for 3 in a row by player,
+     +10 for 2 in a row and one empty cell
+
+     -100 score for 3 in a row by opponent
+     -10 for 2 in a row and one empty cell
+
+*/
+/*
+int evaluate(char gb[3][3])
+{
+    //counters
+    int rowC,
+        colC,
+        diagC = 0;
+
+    //Check rows
+    for (int row = 0; row<3; row++)
+    {
+        rowC++;
+        //+-100 point for 3 in a row
+        if (gb[row][0]==gb[row][1] &&
+            gb[row][1]==gb[row][2])
+        {
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +100;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+        //+- 10 point for 2-in-a-line with one empty cell beside
+        if ((gb[row][0]=='x' && gb[row][1]=='x' && gb[row][2]=='_') ||
+            (gb[row][0]=='o' && gb[row][1]=='o' && gb[row][2]=='_'))
+        {
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +10;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -10;
+            }
+        }
+    }
+    //Checking columns
+    for (int col = 0; col<3; col++)
+    {
+        colC++;
+        if (gb[0][col]==gb[1][col] &&
+            gb[1][col]==gb[2][col])
+        {
+            nodesGenerated += 3;
+            if (gb[0][col]==player)
+            {
+                gameLength =+ rowC + colC;
+                return +100;
+            }
+            else if (gb[0][col]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+        //+- 10 point for 2-in-a-line with two empty cells beside
+        if ((gb[0][col] == 'x' && gb[1][col]== 'x' && gb[2][col]=='_') ||
+            (gb[0][col] == 'o' && gb[1][col]== 'o' && gb[2][col]=='_'))
+        {
+            nodesGenerated += 3;
+            if (gb[col][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +10;
+            }
+            else if (gb[col][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -10;
+            }
+        }
+    }
+    //Checking diagonals
+    if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
+    {
+        diagC++;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+    if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
+    {
+        diagC += 2;
+        nodesGenerated += 3;
+        if (gb[0][2]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][2]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+
+    //+- 10 point for 2-in-a-line with two empty cells beside (diagonals)
+    if ((gb[0][0] == 'x' && gb[1][1] == 'x' && gb[2][2]=='_') ||
+        (gb[0][0] == 'o' && gb[1][1] == 'o' && gb[2][2]=='_'))
+    {
+        diagC += 3;
+        nodesGenerated += 3;;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[0][2] == 'x' && gb[1][1]== 'x' && gb[2][0]=='_') ||
+        (gb[0][2] == 'o' && gb[1][1]== 'o' && gb[2][0]=='_'))
+    {
+        diagC += 4;
+        nodesGenerated += 12;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[2][2] == 'x' && gb[1][1]== 'x' && gb[2][2]=='_') ||
+        (gb[2][2] == 'o' && gb[1][1]== 'o' && gb[2][2]=='_'))
+    {
+        diagC += 5;
+        nodesGenerated += 15;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[2][0] == 'x' && gb[1][1] == 'x' && gb[2][0]=='_') ||
+        (gb[2][0] == 'o' && gb[1][1] == 'o' && gb[2][0]=='_'))
+    {
+        diagC += 6;
+        nodesGenerated += 18;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    //Return 0 if no winners
+    gameLength = 2^9;
+    gameLength = 2^12;
+    return 0;
+}
+*/
+
+
+/*
+************************************************************
+            EVALUATION FUNCTION 4
+     +100 score for 3 in a row by player,
+     +10 for 2 in a row and one empty cell
+     +1 point for each 1-in-a-line with two empty cells
+
+     -100 score for 3 in a row by opponent
+     -10 for 2 in a row and one empty cell
+     -1 point for each 1-in-a-line with two empty cells
+
+*/
+
+/*
+int evaluate(char gb[3][3])
+{
+    //counters
+    int rowC,
+        colC,
+        diagC = 0;
+
+    //Check rows
+    for (int row = 0; row<3; row++)
+    {
+        rowC++;
+        //+-100 point for 3 in a row
+        if (gb[row][0]==gb[row][1] &&
+            gb[row][1]==gb[row][2])
+        {
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +100;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+        //+- 10 point for 2-in-a-line with one empty cell beside
+        if ((gb[row][0]=='x' && gb[row][1]=='x' && gb[row][2]=='_') ||
+            (gb[row][0]=='o' && gb[row][1]=='o' && gb[row][2]=='_'))
+        {
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +10;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -10;
+            }
+        }
+        //+- 1 point for 1-in-a-line with two empty cells beside
+        if (gb[row][0] != '_' && gb[row][1]== '_' && gb[row][2]=='_')
+        {
+            nodesGenerated += 3;
+            if (gb[row][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +1;
+            }
+            else if (gb[row][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -1;
+            }
+        }
+    }
+    //Checking columns
+    for (int col = 0; col<3; col++)
+    {
+        colC++;
+        if (gb[0][col]==gb[1][col] &&
+            gb[1][col]==gb[2][col])
+        {
+            nodesGenerated += 3;
+            if (gb[0][col]==player)
+            {
+                gameLength =+ rowC + colC;
+                return +100;
+            }
+            else if (gb[0][col]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -100;
+            }
+        }
+        //+- 10 point for 2-in-a-line with two empty cells beside
+        if ((gb[0][col] == 'x' && gb[1][col]== 'x' && gb[2][col]=='_') ||
+            (gb[0][col] == 'o' && gb[1][col]== 'o' && gb[2][col]=='_'))
+        {
+            nodesGenerated += 3;
+            if (gb[col][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +10;
+            }
+            else if (gb[col][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -10;
+            }
+        }
+
+        //+- 1 point for 1-in-a-line with two empty cells beside
+        if (gb[0][col] != '_' && gb[1][col]== '_' && gb[2][col]=='_')
+        {
+            nodesGenerated += 3;
+            if (gb[col][0]==player)
+            {
+                gameLength += rowC + colC;
+                return +1;
+            }
+            else if (gb[col][0]==opponent)
+            {
+                gameLength += rowC + colC;
+                return -1;
+            }
+        }
+    }
+    //Checking diagonals
+    if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
+    {
+        diagC++;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+    if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
+    {
+        diagC += 2;
+        nodesGenerated += 3;
+        if (gb[0][2]==player)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return +100;
+        }
+        else if (gb[0][2]==opponent)
+        {
+            gameLength = gameLength + rowC + colC + diagC;
+            return -100;
+        }
+    }
+
+    //+- 10 point for 2-in-a-line with two empty cells beside (diagonals)
+    if ((gb[0][0] == 'x' && gb[1][1] == 'x' && gb[2][2]=='_') ||
+        (gb[0][0] == 'o' && gb[1][1] == 'o' && gb[2][2]=='_'))
+    {
+        diagC += 3;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[0][2] == 'x' && gb[1][1]== 'x' && gb[2][0]=='_') ||
+        (gb[0][2] == 'o' && gb[1][1]== 'o' && gb[2][0]=='_'))
+    {
+        diagC += 4;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[2][2] == 'x' && gb[1][1]== 'x' && gb[2][2]=='_') ||
+        (gb[2][2] == 'o' && gb[1][1]== 'o' && gb[2][2]=='_'))
+    {
+        diagC += 5;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if ((gb[2][0] == 'x' && gb[1][1] == 'x' && gb[2][0]=='_') ||
+        (gb[2][0] == 'o' && gb[1][1] == 'o' && gb[2][0]=='_'))
+    {
+        diagC += 6;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +10;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -10;
+        }
+    }
+    if (gb[0][0] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
+    {
+        diagC += 3;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +1;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -1;
+        }
+    }
+    if (gb[0][2] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
+    {
+        diagC += 3;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +1;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -1;
+        }
+    }
+    if (gb[2][2] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
+    {
+        diagC += 3;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +1;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -1;
+        }
+    }
+    if (gb[2][0] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
+    {
+        diagC += 3;
+        nodesGenerated += 3;
+        if (gb[0][0]==player)
+        {
+            gameLength += rowC + colC;
+            return +1;
+        }
+        else if (gb[0][0]==opponent)
+        {
+            gameLength += rowC + colC;
+            return -1;
+        }
+    }
+
+    //Return 0 if no winners
+    //all possible values
+    gameLength = 2^9;
+    nodesGenerated = 2^12;
+    return 0;
+}
+*/
+
+//Determines if there are moves left to play
+bool isMovesLeft(char gameBoard[3][3])
+{
+    for (int i = 0; i<3; i++)
+        for (int j = 0; j<3; j++)
+            if (gameBoard[i][j]=='_')
+                return true;
+            return false;
 }
 
 //Returns game board values MiniMax
@@ -300,15 +803,12 @@ int minimax(char gameBoard[3][3], int depth, bool isMax)
 {
     int score = evaluate(gameBoard);
 
-    //Return score if game is won by max
     if (score == 100)
         return score;
 
-    //Return score if game is won by min
     if (score == -100)
         return score;
 
-    //Tie game
     if (isMovesLeft(gameBoard)==false)
         return 0;
 
@@ -330,6 +830,7 @@ int minimax(char gameBoard[3][3], int depth, bool isMax)
         }
         return highest;
     }
+
     //Minimizer's Move
     else
     {
@@ -374,7 +875,7 @@ rowCols findBestMove(char gameBoard[3][3])
                 {
                     bestMove.row = i;
                     bestMove.col = j;
-                    bestVal = moveVal;  //bestVal is highest value
+                    bestVal = moveVal;
                 }
             }
         }
@@ -444,7 +945,7 @@ int main()
     bool movesLeft = true;
     char winner;
 
-    //main loop finds X and O positions
+    //main loop that finds X and O positions
     while (movesLeft)
     {
         bestMove = findBestMove(gameBoard);
@@ -475,6 +976,9 @@ int main()
              << "Total Nodes Generated: " << nodesGeneratedTotal << endl;
 
     winner = toupper(winnerCheck(gameBoard));
+    if (winner != 'I')
     cout << "The winner is " << winner << "!";
+    else
+    cout << "The game has ended in a tie!";
     return 0;
 }
