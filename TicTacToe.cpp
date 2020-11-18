@@ -27,7 +27,7 @@ int nodesGenerated = 0;
 
 */
 
-
+/*
 int evaluate(char gb[3][3])
 {
     //counters
@@ -93,7 +93,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
     {
-        diagC += 2; //increment twice to include first check
+        diagC ++;
         nodesGenerated += 3;
         if (gb[0][2]==player)
         {
@@ -111,6 +111,7 @@ int evaluate(char gb[3][3])
     nodesGenerated = 2^12;
     return 0;
 }
+/*
 
 
 /*
@@ -203,7 +204,7 @@ int evaluate(char gb[3][3])
     //Checking diagonals
     if (gb[0][0]==gb[1][1] && gb[1][1]==gb[2][2])
     {
-        diagC++;
+        diagC+=3;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -218,7 +219,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
     {
-        diagC += 2; //increment twice to include first check
+        diagC += 3;
         nodesGenerated += 3;
         if (gb[0][2]==player)
         {
@@ -236,7 +237,7 @@ int evaluate(char gb[3][3])
     if (gb[0][0] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
         diagC += 3;
-        nodesGenerated += 3;;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -251,7 +252,7 @@ int evaluate(char gb[3][3])
     if (gb[0][2] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
         diagC += 3;
-        nodesGenerated += 3;;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -266,7 +267,7 @@ int evaluate(char gb[3][3])
     if (gb[2][2] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
         diagC += 3;
-        nodesGenerated += 3;;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -281,7 +282,7 @@ int evaluate(char gb[3][3])
     if (gb[2][0] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
         diagC += 3;
-        nodesGenerated += 3;;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -295,7 +296,7 @@ int evaluate(char gb[3][3])
     }
     //Return 0 if no winners
     gameLength = 2^9;
-    gameLength = 2^12;
+    nodesGenerated = 2^12;
     return 0;
 }
 */
@@ -410,7 +411,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
     {
-        diagC += 2;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][2]==player)
         {
@@ -428,8 +429,8 @@ int evaluate(char gb[3][3])
     if ((gb[0][0] == 'x' && gb[1][1] == 'x' && gb[2][2]=='_') ||
         (gb[0][0] == 'o' && gb[1][1] == 'o' && gb[2][2]=='_'))
     {
-        diagC += 3;
-        nodesGenerated += 3;;
+        diagC++;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -444,8 +445,8 @@ int evaluate(char gb[3][3])
     if ((gb[0][2] == 'x' && gb[1][1]== 'x' && gb[2][0]=='_') ||
         (gb[0][2] == 'o' && gb[1][1]== 'o' && gb[2][0]=='_'))
     {
-        diagC += 4;
-        nodesGenerated += 12;
+        diagC++;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -460,8 +461,8 @@ int evaluate(char gb[3][3])
     if ((gb[2][2] == 'x' && gb[1][1]== 'x' && gb[2][2]=='_') ||
         (gb[2][2] == 'o' && gb[1][1]== 'o' && gb[2][2]=='_'))
     {
-        diagC += 5;
-        nodesGenerated += 15;
+        diagC++;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -476,8 +477,8 @@ int evaluate(char gb[3][3])
     if ((gb[2][0] == 'x' && gb[1][1] == 'x' && gb[2][0]=='_') ||
         (gb[2][0] == 'o' && gb[1][1] == 'o' && gb[2][0]=='_'))
     {
-        diagC += 6;
-        nodesGenerated += 18;
+        diagC++;
+        nodesGenerated += 3;
         if (gb[0][0]==player)
         {
             gameLength += rowC + colC;
@@ -491,7 +492,7 @@ int evaluate(char gb[3][3])
     }
     //Return 0 if no winners
     gameLength = 2^9;
-    gameLength = 2^12;
+    nodesGenerated = 2^12;
     return 0;
 }
 */
@@ -510,7 +511,6 @@ int evaluate(char gb[3][3])
 
 */
 
-/*
 int evaluate(char gb[3][3])
 {
     //counters
@@ -640,7 +640,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2]==gb[1][1] && gb[1][1]==gb[2][0])
     {
-        diagC += 2;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][2]==player)
         {
@@ -658,7 +658,7 @@ int evaluate(char gb[3][3])
     if ((gb[0][0] == 'x' && gb[1][1] == 'x' && gb[2][2]=='_') ||
         (gb[0][0] == 'o' && gb[1][1] == 'o' && gb[2][2]=='_'))
     {
-        diagC += 3;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -674,7 +674,7 @@ int evaluate(char gb[3][3])
     if ((gb[0][2] == 'x' && gb[1][1]== 'x' && gb[2][0]=='_') ||
         (gb[0][2] == 'o' && gb[1][1]== 'o' && gb[2][0]=='_'))
     {
-        diagC += 4;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -690,7 +690,7 @@ int evaluate(char gb[3][3])
     if ((gb[2][2] == 'x' && gb[1][1]== 'x' && gb[2][2]=='_') ||
         (gb[2][2] == 'o' && gb[1][1]== 'o' && gb[2][2]=='_'))
     {
-        diagC += 5;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -706,7 +706,7 @@ int evaluate(char gb[3][3])
     if ((gb[2][0] == 'x' && gb[1][1] == 'x' && gb[2][0]=='_') ||
         (gb[2][0] == 'o' && gb[1][1] == 'o' && gb[2][0]=='_'))
     {
-        diagC += 6;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -721,7 +721,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][0] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
-        diagC += 3;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -736,7 +736,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[0][2] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
-        diagC += 3;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -751,7 +751,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[2][2] != '_' && gb[1][1]== '_' && gb[2][2]=='_')
     {
-        diagC += 3;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -766,7 +766,7 @@ int evaluate(char gb[3][3])
     }
     if (gb[2][0] != '_' && gb[1][1]== '_' && gb[2][0]=='_')
     {
-        diagC += 3;
+        diagC++;
         nodesGenerated += 3;
         if (gb[0][0]==player)
         {
@@ -781,12 +781,11 @@ int evaluate(char gb[3][3])
     }
 
     //Return 0 if no winners
-    //all possible values
     gameLength = 2^9;
     nodesGenerated = 2^12;
     return 0;
 }
-*/
+
 
 //Determines if there are moves left to play
 bool isMovesLeft(char gameBoard[3][3])
