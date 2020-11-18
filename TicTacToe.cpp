@@ -1,7 +1,7 @@
 /* Tic-tac-toe by Dakota Ruhl, Kalin Ybarra, and Nicole Beltran.
 
-    The main function will determine the next best move for the game piece. We need to loop this and finish creating the
-    entire board to determine a winner or a loser.
+    A tic-tac-toe simulation game using AI techniques of Minimax and
+    Heuristic Evaluation function to determine game piece positions.
 */
 
 #include <iostream>
@@ -27,7 +27,7 @@ int nodesGenerated = 0;
 
 */
 
-/*
+
 int evaluate(char gb[3][3])
 {
     //counters
@@ -111,7 +111,7 @@ int evaluate(char gb[3][3])
     nodesGenerated = 2^12;
     return 0;
 }
-/*
+
 
 
 /*
@@ -511,6 +511,7 @@ int evaluate(char gb[3][3])
 
 */
 
+/*
 int evaluate(char gb[3][3])
 {
     //counters
@@ -785,7 +786,7 @@ int evaluate(char gb[3][3])
     nodesGenerated = 2^12;
     return 0;
 }
-
+*/
 
 //Determines if there are moves left to play
 bool isMovesLeft(char gameBoard[3][3])
